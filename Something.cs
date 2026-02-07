@@ -1,52 +1,43 @@
+using System.Diagnostics;
 using Godot;
-using System;
 
 public partial class Something : Label
 {
-	private TimeSpan _secondsRemaining;
-	private bool _isRunning;
+    private readonly Stopwatch _stopWatch = new();
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		_secondsRemaining = TimeSpan.FromSeconds(0);
-		SecondsToText();
-	}
+    public override void _Ready()
+    {
+        SecondsToText();
+    }
 
-	private void SecondsToText()
-	{
-		Text = $"{_secondsRemaining.Minutes:00}:{_secondsRemaining.Seconds:00}.{_secondsRemaining.Milliseconds:000}";
-	}
+    private void SecondsToText()
+    {
+        Text = $"{_stopWatch.Elapsed.Minutes:00}:{_stopWatch.Elapsed.Seconds:00}.{_stopWatch.Elapsed.Milliseconds:000}";
+    }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		if (_isRunning)
-		{
-			_secondsRemaining = _secondsRemaining.Add(TimeSpan.FromSeconds(delta));
-			SecondsToText();
-		}
+    public override void _Process(double delta)
+    {
+        SecondsToText();
+    }
 
-	}
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed)
+            if (keyEvent.Keycode == Key.Space)
+            {
+                if (_stopWatch.IsRunning)
+                {
+                    _stopWatch.Stop();
+                }
+                else
+                {
+                    if (_stopWatch.ElapsedMilliseconds > 0)
+                        _stopWatch.Reset();
+                    else
+                        _stopWatch.Restart();
+                }
 
-	public override void _Input(InputEvent @event)
-	{
-		if (@event is InputEventKey keyEvent && keyEvent.Pressed)
-		{
-			if (keyEvent.Keycode == Key.Space)
-			{
-				if (!_isRunning && _secondsRemaining.TotalSeconds > 0)
-				{
-					_secondsRemaining = TimeSpan.Zero;
-					SecondsToText();
-				}
-				else
-				{
-				_isRunning = !_isRunning;
-					
-				}
-				
-			}
-		}
-	}
+                SecondsToText();
+            }
+    }
 }
