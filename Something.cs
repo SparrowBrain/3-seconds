@@ -36,8 +36,6 @@ public partial class Something : Label
                     else
                         _stopWatch.Restart();
                 }
-
-                SecondsToText();
             }
     }
 }
