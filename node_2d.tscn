@@ -6,7 +6,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_wtcfe"]
 font = ExtResource("1_0e48y")
 font_size = 72
-font_color = Color(0.5761566, 0.5244598, 0.48461998, 1)
+font_color = Color(1, 0, 0, 1)
 
 [node name="Node2D" type="Node2D" unique_id=2004229578]
 
