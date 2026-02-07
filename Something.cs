@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Godot;
 
@@ -8,6 +9,7 @@ public partial class Something : Label
     public override void _Ready()
     {
         SecondsToText();
+        DisplayTimerProperties();
     }
 
     private void SecondsToText()
@@ -37,5 +39,23 @@ public partial class Something : Label
                         _stopWatch.Restart();
                 }
             }
+    }
+    
+    public static void DisplayTimerProperties()
+    {
+        // Display the timer frequency and resolution.
+        if (Stopwatch.IsHighResolution)
+        {
+            GD.Print("Operations timed using the system's high-resolution performance counter.");
+        }
+        else
+        {
+            GD.Print("Operations timed using the DateTime class.");
+        }
+
+        long frequency = Stopwatch.Frequency;
+        GD.Print($"  Timer frequency in ticks per second = {frequency}");
+        long nanosecPerTick = (1000L*1000L*1000L) / frequency;
+        GD.Print($"  Timer is accurate within {nanosecPerTick} nanoseconds");
     }
 }
